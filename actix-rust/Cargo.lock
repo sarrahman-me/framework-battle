@@ -94,6 +94,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "actix-rust"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "env_logger",
+ "serde",
+]
+
+[[package]]
 name = "actix-server"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -183,15 +192,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "actixweb-rust"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "env_logger",
- "serde",
 ]
 
 [[package]]
