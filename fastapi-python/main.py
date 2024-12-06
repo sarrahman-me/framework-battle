@@ -1,6 +1,6 @@
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Optional
 
 app = FastAPI()
 
@@ -20,16 +20,16 @@ class ResponseType(BaseModel):
 
 
 @app.post("/books", response_model=ResponseType)
-def add_book(payload: Book):
-    global next_id
-
+def add_new_book(payload: Book):
     existing_book = next(
         (book for book in books if book["title"] == payload.title), None
     )
+
     if existing_book:
         raise HTTPException(status_code=409, detail="Buku sudah ada")
 
     new_book = payload.model_dump()
+
     new_book["id"] = len(books) + 1
     books.append(new_book)
 
@@ -37,13 +37,14 @@ def add_book(payload: Book):
 
 
 @app.get("/books", response_model=ResponseType)
-def get_books():
+def get_all_books():
     return ResponseType(message="Berhasil mendapatkan semua buku", data=books)
 
 
 @app.patch("/books/{book_id}", response_model=ResponseType)
 def update_book(book_id: int, payload: Book):
     book = next((book for book in books if book["id"] == book_id), None)
+
     if not book:
         raise HTTPException(status_code=404, detail="Buku tidak ditemukan")
 
@@ -61,6 +62,7 @@ def update_book(book_id: int, payload: Book):
 def delete_book(book_id: int):
     global books
     book = next((book for book in books if book["id"] == book_id), None)
+
     if not book:
         raise HTTPException(status_code=404, detail="Buku tidak ditemukan")
 
