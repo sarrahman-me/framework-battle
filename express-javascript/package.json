@@ -1,5 +1,5 @@
 {
-  "name": "express-test",
+  "name": "express-javascript",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -11,5 +11,8 @@
   "description": "",
   "dependencies": {
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
