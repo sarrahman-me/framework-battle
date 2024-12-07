@@ -35,12 +35,13 @@ func main() {
 
 	app.Post("/books", func(c *fiber.Ctx) error {
 		mutex.Lock()
+
 		defer mutex.Unlock()
 
 		var payload Book
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(ResponseType{
-				Message: "Invalid request body",
+				Message: "Data tidak valid",
 			})
 		}
 
@@ -53,16 +54,18 @@ func main() {
 		}
 
 		payload.ID = len(books) + 1
+
 		books = append(books, payload)
 
 		return c.Status(fiber.StatusCreated).JSON(ResponseType{
-			Message: "Buku berhasil ditambahkan",
+			Message: "Berhasil menambahkan buku baru",
 			Data:    payload,
 		})
 	})
 
 	app.Get("/books", func(c *fiber.Ctx) error {
 		mutex.Lock()
+
 		defer mutex.Unlock()
 
 		return c.Status(fiber.StatusOK).JSON(ResponseType{
@@ -78,7 +81,7 @@ func main() {
 		id, err := strconv.Atoi(c.Params("id"))
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(ResponseType{
-				Message: "Invalid book ID",
+				Message: "Invalid id",
 			})
 		}
 
@@ -89,6 +92,7 @@ func main() {
 				break
 			}
 		}
+
 		if updatedBook == nil {
 			return c.Status(fiber.StatusNotFound).JSON(ResponseType{
 				Message: "Buku tidak ditemukan",
@@ -98,7 +102,7 @@ func main() {
 		var payload Book
 		if err := c.BodyParser(&payload); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(ResponseType{
-				Message: "Invalid request body",
+				Message: "Invalid Body",
 			})
 		}
 
@@ -125,7 +129,7 @@ func main() {
 		id, err := strconv.Atoi(c.Params("id"))
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(ResponseType{
-				Message: "Invalid book ID",
+				Message: "invalid ID",
 			})
 		}
 
@@ -134,7 +138,7 @@ func main() {
 				deletedBook := book
 				books = append(books[:i], books[i+1:]...)
 				return c.Status(fiber.StatusOK).JSON(ResponseType{
-					Message: "Buku berhasil dihapus",
+					Message: "Berhasil menghapus data buku",
 					Data:    deletedBook,
 				})
 			}

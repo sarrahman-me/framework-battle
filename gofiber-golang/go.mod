@@ -1,6 +1,6 @@
 module gofiber-golang
 
-go 1.23.2
+go 1.23.4
 
 require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
