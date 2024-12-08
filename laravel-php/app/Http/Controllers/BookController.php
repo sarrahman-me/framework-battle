@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
 {
-    // Menambahkan buku baru
     public function addBook(Request $request)
     {
         $request->validate([
@@ -17,8 +17,7 @@ class BookController extends Controller
             'year' => 'required|integer',
         ]);
 
-        // Cek apakah buku dengan title yang sama sudah ada
-        $existingBooks = Redis::lrange('books', 0, -1);  // Gunakan lrange untuk list
+        $existingBooks = Redis::lrange('books', 0, -1);
         foreach ($existingBooks as $bookJson) {
             $book = json_decode($bookJson, true);
             if ($book['title'] === $request->title) {
@@ -29,7 +28,6 @@ class BookController extends Controller
             }
         }
 
-        // Menambah buku ke Redis
         $bookId = Redis::llen('books') + 1;
         $book = [
             'id' => $bookId,
@@ -42,10 +40,9 @@ class BookController extends Controller
         return response()->json([
             'message' => 'Berhasil menambahkan buku baru',
             'data' => $book
-        ], Response::HTTP_OK);
+        ], Response::HTTP_CREATED);
     }
 
-    // Mendapatkan semua buku
     public function getBooks()
     {
         $books = Redis::lrange('books', 0, -1);
@@ -53,11 +50,10 @@ class BookController extends Controller
 
         return response()->json([
             'message' => 'Berhasil mendapatkan semua buku',
-            'data' => $books
+            'data' => $books,
         ], Response::HTTP_OK);
     }
 
-    // Mengupdate data buku
     public function updateBook($id, Request $request)
     {
         $request->validate([
@@ -90,18 +86,19 @@ class BookController extends Controller
         $book['year'] = $request->year ?? $book['year'];
 
         $books[$bookIndex] = $book;
-        Redis::del('books'); // Hapus data buku lama
+        Redis::del('books');
         foreach ($books as $updatedBook) {
-            Redis::rpush('books', json_encode($updatedBook)); // Tambahkan buku yang telah diperbarui
+            Redis::rpush('books', json_encode($updatedBook));
         }
 
+
         return response()->json([
-            'message' => 'Berhasil mengupdate buku',
+            'message' => 'Berhasil megupdate buku',
             'data' => $book
         ], Response::HTTP_OK);
     }
 
-    // Menghapus buku
+
     public function deleteBook($id)
     {
         $books = Redis::lrange('books', 0, -1);
@@ -115,16 +112,20 @@ class BookController extends Controller
             }
         }
 
+
         if ($bookIndex === null) {
-            return response()->json([
-                'message' => 'Buku tidak ditemukan',
-                'data' => null
-            ], Response::HTTP_NOT_FOUND);
+            return response()->json(
+                [
+                    'message' => 'Buku tidak ditemukan',
+                    'data' => null
+                ],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
-        // Hapus buku
         unset($books[$bookIndex]);
         Redis::del('books');
+
         foreach ($books as $remainingBook) {
             Redis::rpush('books', json_encode($remainingBook));
         }
