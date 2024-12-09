@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(drogon-test CXX)
+project(drogon-cpp CXX)
 
 include(CheckIncludeFileCXX)
 
@@ -62,9 +62,9 @@ target_include_directories(${PROJECT_NAME}
 target_sources(${PROJECT_NAME}
                PRIVATE
                ${SRC_DIR}
-               ${CTL_SRC}
                ${FILTER_SRC}
                ${PLUGIN_SRC}
+               ${CTL_SRC}
                ${MODEL_SRC})
 # ##############################################################################
 # uncomment the following line for dynamically loading views 

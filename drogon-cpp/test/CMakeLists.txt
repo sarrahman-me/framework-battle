@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(drogon-test_test CXX)
+project(drogon-cpp_test CXX)
 
 add_executable(${PROJECT_NAME} test_main.cc)
 
