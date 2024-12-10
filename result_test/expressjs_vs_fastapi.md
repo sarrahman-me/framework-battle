@@ -1,3 +1,4 @@
+![express vs fastapi](https://ik.imagekit.io/sarrahmanme/expressvsfastapi.png?updatedAt=1733816140808)
 # Hasil Pengujian Performa API: Express.js vs FastAPI
 
 ## 1. Pengujian POST
