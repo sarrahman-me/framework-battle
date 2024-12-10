@@ -1,77 +1,95 @@
 ![express vs fastapi](https://ik.imagekit.io/sarrahmanme/expressvsfastapi.png?updatedAt=1733816140808)
-# Hasil Pengujian Performa API: Express.js vs FastAPI
+# Analisis Kinerja ExpressJS vs FastAPI
+
+Berikut adalah analisis kinerja kedua framework berdasarkan pengujian `POST` dan `GET`.
 
 ## 1. Pengujian POST
-
-### Hasil Express.js
-- **Durasi Penyelesaian**: 5,4 detik
-- **Rata-rata Waktu Respons**: 5,28 ms
-- **p95**: 12,99 ms (95% requests lebih cepat dari ini)
-- **p99**: 21,59 ms (99% requests lebih cepat dari ini)
-- **Permintaan Berhasil**: 100.000 (100%)
-- **Error**: 0%
-
-### Hasil FastAPI
-- **Durasi Penyelesaian**: 17,1 detik
-- **Rata-rata Waktu Respons**: 17,02 ms
-- **p95**: 56,89 ms (95% requests lebih cepat dari ini)
-- **p99**: 75,26 ms (99% requests lebih cepat dari ini)
-- **Permintaan Berhasil**: 100.000 (100%)
-- **Error**: 0%
-
-### Analisis POST
-- **Kecepatan Penyelesaian**: Express.js lebih cepat menyelesaikan seluruh iterasi (5,4 detik) dibandingkan FastAPI (17,1 detik).
-- **Waktu Respons**: Express.js memiliki waktu respons rata-rata lebih baik (5,28 ms) dibandingkan FastAPI (17,02 ms). Nilai p95 dan p99 juga menunjukkan stabilitas Express.js lebih unggul.
-- **Keandalan**: Keduanya tidak memiliki error, sehingga sama-sama andal.
-
-**Pemenang Pengujian POST**: Express.js
-
----
+**Parameter Analisis:**
+- **Jumlah Permintaan Berhasil:** Kedua framework mencapai 100,000 permintaan dengan status 201 (100% sukses).
+- **Rata-rata Waktu Respons (avg):**
+  - Express.js: 29.27 ms
+  - FastAPI: 198.69 ms
+- **P99 Waktu Respons:**
+  - Express.js: 53.48 ms
+  - FastAPI: 450.7 ms
+- **Throughput (request per detik):**
+  - Express.js: 3409.36/s
+  - FastAPI: 503.07/s
+- **Durasi Total untuk 100,000 Iterasi:**
+  - Express.js: 29.3 s
+  - FastAPI: 3m18.8 s (198.8 s)
 
 ## 2. Pengujian GET
-
-### Hasil Express.js
-- **Throughput (permintaan per detik)**: 1.672 req/s
-- **Rata-rata Waktu Respons**: 31,72 ms
-- **p95**: 76,73 ms (95% requests lebih cepat dari ini)
-- **p99**: 109,04 ms (99% requests lebih cepat dari ini)
-- **Permintaan Berhasil**: 301.080
-- **Error**: 0%
-
-### Hasil FastAPI
-- **Throughput (permintaan per detik)**: 400 req/s
-- **Rata-rata Waktu Respons**: 133,06 ms
-- **p95**: 320,65 ms (95% requests lebih cepat dari ini)
-- **p99**: 389,14 ms (99% requests lebih cepat dari ini)
-- **Permintaan Berhasil**: 72.123
-- **Error**: 0%
-
-### Analisis GET
-- **Throughput**: Express.js memproses lebih banyak permintaan per detik (1.672 req/s) dibandingkan FastAPI (400 req/s).
-- **Waktu Respons**: Express.js memiliki waktu respons rata-rata lebih baik (31,72 ms) dibandingkan FastAPI (133,06 ms). Nilai p95 dan p99 menunjukkan Express.js lebih stabil di bawah beban.
-- **Keandalan**: Tidak ada error pada kedua framework, sehingga keduanya andal.
-
-**Pemenang Pengujian GET**: Express.js
+**Parameter Analisis:**
+- **Jumlah Permintaan Berhasil:**
+  - Express.js: 9465
+  - FastAPI: 2126
+- **Rata-rata Waktu Respons (avg):**
+  - Express.js: 1.07 s
+  - FastAPI: 4.72 s
+- **P99 Waktu Respons:**
+  - Express.js: 5.15 s
+  - FastAPI: 11.62 s
+- **Throughput (request per detik):**
+  - Express.js: 52.52/s
+  - FastAPI: 11.70/s
+- **Data yang Diterima (GET):**
+  - Express.js: 61 GB
+  - FastAPI: 14 GB
 
 ---
 
-## 3. Visualisasi Data
+## Kesimpulan Perbandingan
 
-| Metode | Framework  | Durasi Penyelesaian | Rata-rata Waktu Respons | p95        | p99        | Throughput  | Error Rate |
-|--------|------------|---------------------|-------------------------|------------|------------|-------------|------------|
-| POST   | Express.js | 5,4 detik           | 5,28 ms                 | 12,99 ms   | 21,59 ms   | N/A         | 0%         |
-| POST   | FastAPI    | 17,1 detik          | 17,02 ms                | 56,89 ms   | 75,26 ms   | N/A         | 0%         |
-| GET    | Express.js | 3 menit             | 31,72 ms                | 76,73 ms   | 109,04 ms  | 1.672 req/s | 0%         |
-| GET    | FastAPI    | 3 menit             | 133,06 ms               | 320,65 ms  | 389,14 ms  | 400 req/s   | 0%         |
+| Framework   | POST Waktu Respons (avg) | POST P99 Respons | GET Waktu Respons (avg) | GET P99 Respons | Throughput (POST) | Throughput (GET) | GET Data Diterima |
+|-------------|--------------------------|------------------|-------------------------|-----------------|-------------------|------------------|-------------------|
+| Express.js  | 29.27 ms                | 53.48 ms         | 1.07 s                 | 5.15 s          | 3409.36/s         | 52.52/s          | 61 GB             |
+| FastAPI     | 198.69 ms               | 450.7 ms         | 4.72 s                 | 11.62 s         | 503.07/s          | 11.70/s          | 14 GB             |
+
+### Faktor Penentu Pemenang
+1. **Kecepatan Penyelesaian (POST dan GET):** 
+   - Express.js lebih unggul secara signifikan dalam waktu respons rata-rata dan P99.
+2. **Keandalan:** 
+   - Kedua framework mencatat 0% kesalahan, sehingga keduanya setara dalam keandalan.
+3. **Throughput:** 
+   - Express.js unggul di POST (3409.36/s vs 503.07/s) dan GET (52.52/s vs 11.70/s).
+
+**Pemenang:** Express.js
 
 ---
 
-## 4. Kesimpulan
+## Analisis Terperinci
 
-- **Pemenang Pengujian POST**: Express.js
-- **Pemenang Pengujian GET**: Express.js
+### 1. Pengujian POST
+| Framework   | Rata-rata Waktu Respons (ms) | P95 Waktu Respons (ms) | P99 Waktu Respons (ms) | Throughput (req/s) | Keandalan |
+|-------------|------------------------------|-------------------------|-------------------------|--------------------|-----------|
+| Express.js  | 29.27                       | 50.86                  | 53.48                  | 3409.36            | 100%      |
+| FastAPI     | 198.69                      | 420.94                 | 450.7                  | 503.07             | 100%      |
 
-### Alasan Utama Kemenangan Express.js
-- **Kinerja**: Lebih cepat menyelesaikan permintaan POST dan GET.
-- **Waktu Respons**: Memiliki waktu respons rata-rata yang lebih rendah, baik untuk POST maupun GET.
-- **Throughput (GET)**: Memproses lebih banyak permintaan per detik dibandingkan FastAPI.
+### 2. Pengujian GET
+| Beban      | Framework   | Throughput (req/s) | Rata-rata Waktu Respons (ms) | P95 Waktu Respons (ms) | P99 Waktu Respons (ms) |
+|------------|-------------|--------------------|------------------------------|-------------------------|-------------------------|
+| Light Load | Express.js  | 52.52             | 1070                         | 2760                   | 5150                   |
+|            | FastAPI     | 11.7              | 4720                         | 9910                   | 11,620                 |
+| High Load  | Express.js  | 52.52             | 1070                         | 2760                   | 5150                   |
+|            | FastAPI     | 11.7              | 4720                         | 9910                   | 11,620                 |
+| Spike Load | Express.js  | 52.52             | 1070                         | 2760                   | 5150                   |
+|            | FastAPI     | 11.7              | 4720                         | 9910                   | 11,620                 |
+
+---
+
+## Visualisasi Grafik
+- **Pengujian POST - Rata-rata Waktu Respons:**  
+  Express.js memiliki performa waktu respons yang jauh lebih baik dibandingkan FastAPI.
+
+- **Pengujian GET - Rata-rata Waktu Respons:**  
+  Dalam kondisi Light, High, dan Spike Load, Express.js unggul secara signifikan dibandingkan FastAPI.
+
+- **Throughput (Permintaan per Detik):**  
+  Express.js menunjukkan kemampuan menangani throughput lebih tinggi dibandingkan FastAPI di semua pengujian.
+
+---
+
+## Kesimpulan
+- **Pemenang untuk Pengujian POST:** Express.js karena waktu respons rata-rata lebih rendah (29.27 ms dibandingkan 198.69 ms) dan throughput lebih tinggi (3409 req/s dibandingkan 503 req/s).
+- **Pemenang untuk Pengujian GET:** Express.js karena throughput yang lebih konsisten dan waktu respons rata-rata lebih rendah di semua skenario.
