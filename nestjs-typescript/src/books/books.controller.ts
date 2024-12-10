@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Patch,
   Post,
@@ -12,7 +13,7 @@ import { Book } from './books.model';
 
 @Controller('books')
 export class BooksController {
-  constructor(private readonly bookService: BooksService) {}
+  constructor(private readonly bookService: BooksService) { }
 
   @Get()
   findAll() {
@@ -25,6 +26,7 @@ export class BooksController {
   }
 
   @Post()
+  @HttpCode(201)
   create(@Body() bookData: Omit<Book, 'id'>) {
     const book = this.bookService.create(bookData);
 
