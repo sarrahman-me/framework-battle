@@ -1,5 +1,6 @@
 package com.example.books_api.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.books_api.model.Book;
 import com.example.books_api.service.BookService;
@@ -31,7 +33,15 @@ public class BookController {
 
   @PostMapping
   public ResponseEntity<Book> addNewBook(@RequestBody Book book) {
-    return ResponseEntity.ok(bookService.addNewBook(book));
+    Book createdBook = bookService.addNewBook(book);
+
+    URI location = ServletUriComponentsBuilder
+        .fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(createdBook.getId())
+        .toUri();
+
+    return ResponseEntity.created(location).body(createdBook);
   }
 
   @PatchMapping("/{id}")

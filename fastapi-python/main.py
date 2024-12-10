@@ -19,7 +19,7 @@ class ResponseType(BaseModel):
     data: Optional[object] = None
 
 
-@app.post("/books", response_model=ResponseType)
+@app.post("/books", response_model=ResponseType, status_code=201)
 def add_new_book(payload: Book):
     existing_book = next(
         (book for book in books if book["title"] == payload.title), None

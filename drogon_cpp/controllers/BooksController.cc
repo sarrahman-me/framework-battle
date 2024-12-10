@@ -69,6 +69,10 @@ void BooksController::addBook(
   response["data"]["year"] = newBook.year;
 
   auto resp = HttpResponse::newHttpJsonResponse(response);
+  resp->setStatusCode(k201Created); 
+  resp->addHeader("Location",
+                  "/books/" +
+                      std::to_string(newBook.id)); 
   callback(resp);
 }
 
