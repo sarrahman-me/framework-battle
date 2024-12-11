@@ -31,7 +31,7 @@ export const options = {
 };
 
 export default function() {
-  const res = http.get('http://localhost:8000/books');
+  const res = http.get('http://localhost:8080/books');
   check(res, {
     'status is 200': (r) => r.status === 200,
   });

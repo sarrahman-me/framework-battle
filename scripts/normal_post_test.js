@@ -25,7 +25,7 @@ export default function() {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const res = http.post('http://localhost:8000/books', payload, params);
+  const res = http.post('http://localhost:8080/books', payload, params);
 
   check(res, {
     'status is 201': (r) => r.status === 201,
