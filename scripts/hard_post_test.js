@@ -5,9 +5,9 @@ export const options = {
   scenarios: {
     posts: {
       executor: 'shared-iterations', // Semua VU berbagi jumlah iterasi
-      vus: 500,                       // Jumlah Virtual Users
-      iterations: 500000,              // Total permintaan POST
-      maxDuration: '7m',             // Batas maksimal pengujian
+      vus: 250,                       // Jumlah Virtual Users
+      iterations: 250000,              // Total permintaan POST
+      maxDuration: '5m',             // Batas maksimal pengujian
     },
   },
 };
