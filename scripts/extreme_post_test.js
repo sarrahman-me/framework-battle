@@ -7,7 +7,7 @@ export const options = {
       executor: 'shared-iterations', // Semua VU berbagi jumlah iterasi
       vus: 500,                       // Jumlah Virtual Users
       iterations: 500000,              // Total permintaan POST
-      maxDuration: '10m',             // Batas maksimal pengujian
+      maxDuration: '5m',             // Batas maksimal pengujian
     },
   },
 };
